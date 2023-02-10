@@ -2,13 +2,13 @@
 
 Generate random 1d snakes.
 
-Make using [pybullet](https://pybullet.org/wordpress/index.php/forum-2/), extending [pyrosim](https://github.com/jbongard/pyrosim) & in conjuction with the [ludobots reddit course](https://www.reddit.com/r/ludobots/wiki/installation/).
+Make using [pybullet](https://pybullet.org/wordpress/index.php/forum-2/){:target="\_blank" rel="noopener"}, extending [pyrosim](https://github.com/jbongard/pyrosim){:target="\_blank" rel="noopener"} & in conjuction with the [ludobots reddit course](https://www.reddit.com/r/ludobots/wiki/installation/){:target="\_blank" rel="noopener"}.
 
 # Demo
 
-[Youtube Video:](https://youtu.be/iytX9XCzkNo)
+[Youtube Video:](https://youtu.be/iytX9XCzkNo){:target="\_blank" rel="noopener"}
 
-[![Watch the video](https://img.youtube.com/vi/iytX9XCzkNo/hqdefault.jpg)](https://youtu.be/iytX9XCzkNo)
+[![Watch the video](https://img.youtube.com/vi/iytX9XCzkNo/hqdefault.jpg)](https://youtu.be/iytX9XCzkNo){:target="\_blank" rel="noopener"}
 
 # Running the Code
 
