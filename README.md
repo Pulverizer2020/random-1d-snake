@@ -6,7 +6,7 @@ Make using [pybullet](https://pybullet.org/wordpress/index.php/forum-2/), extend
 
 # Demo
 
-[Youtube Video:](https://img.youtube.com/vi/iytX9XCzkNo/hqdefault.jpg)
+[Youtube Video:](https://youtu.be/iytX9XCzkNo)
 
 [![Watch the video](https://img.youtube.com/vi/iytX9XCzkNo/hqdefault.jpg)](https://youtu.be/iytX9XCzkNo)
 
