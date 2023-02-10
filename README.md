@@ -16,7 +16,7 @@ After installing pyrosim and pybullet, clonse this repository and navigate to th
 
 The 1d snake is defined as a graph, where nodes represent body parts and edges represent connections between those body parts. To create a snake, a self-looping edge is used to denote the same body part should be spawned multiple times in a row:
 
-[Body Diagram](images/Picture1.png)
+[![Body Diagram](images/Picture1.png)]
 
 This recursive edge is regulated by a `self.recursive_limit` in `bodynode.py` which limits the number of times the body part can connect to itself.
 
