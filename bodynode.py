@@ -75,8 +75,9 @@ class BODY_NODE:
         
         
         roll = 0
-        pitch = np.arctan2(myCubeCenter[1], myCubeCenter[0])
-        yaw = np.arctan2(myCubeCenter[2], myCubeCenter[0])
+        pitch = np.arctan2(myCubeCenter[2], myCubeCenter[0])
+        yaw = np.arctan2(myCubeCenter[1], myCubeCenter[0])
+        
 
         # then create the body part
         build_body_array.append(( 
