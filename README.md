@@ -1,25 +1,23 @@
-# Random 1d Snakes
+# Generating 3d Creatures
 
-Generate random 1d snakes.
+Generate random 3d creatures.
 
-Make using [pybullet](https://pybullet.org/wordpress/index.php/forum-2/), extending [pyrosim](https://github.com/jbongard/pyrosim) & in conjuction with the [ludobots reddit course](https://www.reddit.com/r/ludobots/wiki/installation/).
+Make using [pybullet](https://pybullet.org/wordpress/index.php/forum-2/), extending [pyrosim](https://github.com/jbongard/pyrosim)
 
 # Demo
 
-[Youtube Video:](https://youtu.be/iytX9XCzkNo)
+[Youtube Video:](https://youtu.be/9jaJ_KYywTY)
 
-[![Watch the video](https://img.youtube.com/vi/iytX9XCzkNo/hqdefault.jpg)](https://youtu.be/iytX9XCzkNo)
+[![Watch the video](https://img.youtube.com/vi/9jaJ_KYywTY/hqdefault.jpg)](https://youtu.be/9jaJ_KYywTY)
 
 # Running the Code
 
-After installing pyrosim and pybullet, clonse this repository and navigate to this directory. Now run `python3 buildbody.py`. This will generate a random 1d snake. Rerun this command to generate a new random snake.
+After installing pyrosim and pybullet, clonse this repository and navigate to this directory. Now run `python3 buildbody.py`. This will generate a random 3D creature. You can change the number of segments and diversions the creatures has by adding `BODY_NODE` and `BODY_EDGE` and changing the `recursive_limit`.
 
 # Structure of Code
 
-The 1d snake is defined as a graph, where nodes represent body parts and edges represent connections between those body parts. To create a snake, a self-looping edge is used to denote the same body part should be spawned multiple times in a row:
+The 3d creature's genotype is defined as a graph, where nodes represent body parts and edges represent connections between those body parts. To create a creature, a self-looping edge is used to denote the same body part should be spawned multiple times in a row:
 
 <img src="images/Picture1.png" width="200">
 
-This recursive edge is regulated by a `self.recursive_limit` in `bodynode.py` which limits the number of times the body part can connect to itself.
-
-This code is not complete as it only supports recursive edges. However, it has been written in such a way that it can easily be expanded to support outgoing, non-recursive edges.
+The recursive edge is regulated by a `self.recursive_limit` attribute in `bodynode.py` which limits the number of times a body part can connect to itself.
