@@ -10,23 +10,28 @@ from bodynode import build_brain_array
 
 
 
-num_segments = np.random.randint(5,10)
+num_segments = np.random.randint(3,6)
 print("num_segments:", num_segments)
 
-# make recussive limit num_segments - 1
 snake = BODY_NODE(
-                  outgoing_edges=[
-                  BODY_EDGE("is_recursive")
-                  ], 
-                  recursive_limit=num_segments,
-                  )
+                outgoing_edges=[
+                BODY_EDGE("is_recursive"),
+                BODY_EDGE(BODY_NODE(
+                    outgoing_edges=[
+                        BODY_EDGE("is_recursive"),
+                        ],
+                    recursive_limit=np.random.randint(3,6)
+                    ))
+                ], 
+                recursive_limit=num_segments
+                )
 
 
 
 # print(pyrosim.Send_Cube(name=f"{3}", pos=[1,2,3] , size=[1, 2, 3]))
 
 
-snake.Recursively_Generate_Body(None, parent_node_id=None)
+snake.Recursively_Generate_Body(None, parent_node_id=None, my_node_id=None, parentCenterToChildJointUnitVector=None, parentCenterToChildJointPerpendicularUnitVectors=None)
 
 
 
@@ -40,6 +45,7 @@ for bodypart in build_body_array:
     func = bodypart[0]
     args = bodypart[1:]
     func(*args)
+    
 pyrosim.End()
 
 

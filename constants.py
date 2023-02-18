@@ -1,6 +1,6 @@
 import numpy as np
 
-SIM_LENGTH = 1800
+SIM_LENGTH = 3000
 gravityY = -9.8
 
 # amplitudeBackLeg = np.pi/4
@@ -14,7 +14,7 @@ gravityY = -9.8
 # targetAnglesBackLeg = amplitudeBackLeg * np.sin(frequencyBackLeg * x + phaseOffsetBackLeg)
 # targetAnglesFrontLeg = amplitudeFrontLeg * np.sin(frequencyFrontLeg * x + phaseOffsetFrontLeg)
 
-motorJointRange = 0.25
+motorJointRange = 1
 
 
 # evolution parameters

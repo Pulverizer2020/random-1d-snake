@@ -2,11 +2,11 @@ import numpy as np
 import numpy as np
 import pyrosim.pyrosim as pyrosim
 
-import queue
+import copy
 
 
 
-rootx = -3
+rootx = 0
 rooty = 0
 rootz = 2.5
 
@@ -29,9 +29,12 @@ brain_counter = COUNTER()
 class BODY_NODE:
     def __init__(self, outgoing_edges: list["BODY_EDGE"], recursive_limit: int ) -> None:
         # all body parts are rectangular prisims
-        self.length = np.random.rand() * 2
-        self.width = np.random.rand() * 2
-        self.height = np.random.rand() * 2
+        # self.length = np.random.rand()
+        # self.width = np.random.rand()
+        # self.height = np.random.rand()
+        self.length = np.random.uniform(low=0.2, high=1)
+        self.width = np.random.uniform(low=0.2, high=1)
+        self.height = np.random.uniform(low=0.2, high=1)
         self.joint_type = "revolute"
 
         print("self.length, self.width, self.height", self.length, self.width, self.height)
@@ -40,16 +43,12 @@ class BODY_NODE:
         self.recursive_limit = recursive_limit
         self.outgoing_edges = outgoing_edges
 
-    def Recursively_Generate_Body(self, parent: "BODY_NODE", parent_node_id: int | None):
-        print("generating!")
-        # give this root
-        my_node_id = body_counter.Get_Unique_Id()
-
-
-        my_new_length = np.random.uniform(low=0.2, high=1.5)
-        my_new_width = np.random.uniform(low=0.2, high=1.5)
-        my_new_height = np.random.uniform(low=0.2, high=1.5)
-        print(my_new_height)
+    def Recursively_Generate_Body(self, parent: "BODY_NODE", parent_node_id: int | None, my_node_id: int | None, parentCenterToChildJointUnitVector: list[float] | None, parentCenterToChildJointPerpendicularUnitVectors: list[list[float]] | None):
+        
+        
+        # sometimes my_node_id gets passed through by the edge
+        if not my_node_id:
+            my_node_id = body_counter.Get_Unique_Id()
 
         has_sensor = np.random.rand() > 0.5 # has sensor 50% of the time, randomly
         if has_sensor:
@@ -57,69 +56,32 @@ class BODY_NODE:
         else:
             my_rgba_color = "0 1 1 1" # cyan
 
-        # Generate this node
+
+
+        
+
         if my_node_id == 0:
-            print("root node!")
-            build_body_array.append(( 
-                pyrosim.Send_Cube, 
-                str(my_node_id),
-                [rootx,rooty,rootz], 
-                [my_new_length, my_new_width, my_new_height],
-                my_rgba_color
-            ))
-            # pyrosim.Send_Cube(name=f"{my_node_id}", pos=[rootx,rooty,rootz] , size=[self.length, self.width, self.height])
+            myCubeCenter = [rootx, rooty, rootz]
         else:
-            if parent_node_id == 0:
-                # if parent node is the root node, do absolute positioning for joint
-                build_body_array.append(( 
-                    pyrosim.Send_Joint,
-                    f"{parent_node_id}_{my_node_id}",
-                    str(parent_node_id), 
-                    str(my_node_id),
-                    "revolute",
-                    [rootx + parent.length/2, rooty, rootz],
-                    "0 0 1"
-                ))
-                # pyrosim.Send_Joint(name=f"{parent_node_id}_{my_node_id}", parent=str(parent_node_id), child=str(my_node_id), type="revolute", position=[rootx + parent.length/2, rooty, rootz], jointAxis="0 0 1")
-                pass
-            else:
-                # else, do relative positioning for joint
-                build_body_array.append(( 
-                    pyrosim.Send_Joint,
-                    f"{parent_node_id}_{my_node_id}",
-                    str(parent_node_id), 
-                    str(my_node_id),
-                    "revolute",
-                    [parent.length, 0, 0],
-                    "0 0 1"
-                ))
-                # pyrosim.Send_Joint(name=f"{parent_node_id}_{my_node_id}", parent=str(parent_node_id), child=str(my_node_id), type="revolute", position=[parent.length/2, 0, 0], jointAxis="0 0 1")
-                pass
+            parentCenterToChildJointUnitVector
+            parentCenterToChildJointUnitVectorPerp1 = parentCenterToChildJointPerpendicularUnitVectors[0]
+            parentCenterToChildJointUnitVectorPerp2 = parentCenterToChildJointPerpendicularUnitVectors[1]
+
+            # the center of the new cube is in the same direction as the previous center to this connecting joint
+            myCubeCenter = parentCenterToChildJointUnitVector * self.length/2
             
-            # then create the body part
-            # BECAUSE THIS IS A 1D SNAKE, I WILL JUST PLACE JOINT AND NEW NODE TO THE +X SIDE
-            build_body_array.append(( 
-                pyrosim.Send_Cube, 
-                str(my_node_id),
-                [my_new_length/2, 0, 0], 
-                [my_new_length, my_new_width, my_new_height],
-                my_rgba_color
-            ))
 
+        # then create the body part
+        build_body_array.append(( 
+            pyrosim.Send_Cube, 
+            str(my_node_id),
+            myCubeCenter, 
+            [self.length, self.width, self.height],
+            my_rgba_color
+        ))
 
-            # create a motor neuron for every joint
-            my_motor_id = brain_counter.Get_Unique_Id()
-            build_brain_array.append((
-                pyrosim.Send_Motor_Neuron,
-                str(my_motor_id),
-                f"{parent_node_id}_{my_node_id}"
-            ))
+        
 
-
-
-        self.length = my_new_length
-        self.width = my_new_width
-        self.height = my_new_height
 
 
         if has_sensor:
@@ -132,12 +94,38 @@ class BODY_NODE:
                 str(my_node_id),
             ))
 
+        
+
+        if my_node_id == 0:
+            # if root node, make upstream joint position be an arbitrary edge of the cube IN ABSOLUTE COORDINATES
+            upstreamJointPosition = [rootx - self.length/2, rooty, rootz]
+        else:
+            upstreamJointPosition = []
+
+
+        if my_node_id == 0:
+            # initial condition,
+            myUpstreamJointProportion = [0,0.5,0.5]
+        else:
+            # TBD
+            # probably using parameter passed into function from NODE_EDGE
+            # THIS NEEDS TO BE RELATIVE TO THE CURRENT BOX, NOT THE PREVIOUS ONE
+            # myUpstreamJointProportion = parentRelativeJointProportion
+            
+            myUpstreamJointProportion = [0,0.5,0.5]
+
+
+      
+
+
 
         # then follow outgoing edges
         for outgoing_edge in self.outgoing_edges:
             if outgoing_edge.child == "is_recursive":
                 self.recursive_limit -= 1
-                outgoing_edge.Follow_Edge(parent=self, parent_node_id=my_node_id)
+                if self.recursive_limit > 0:
+                    print("self.recursive_limit", self.recursive_limit)
+                    outgoing_edge.Follow_Edge(parent=self, parent_node_id=my_node_id, parentCubeCenter=myCubeCenter, upstreamJointPosition=upstreamJointPosition, upstreamJointProportion=myUpstreamJointProportion)
             else:
                 # generate that child without decrementing self.recursive_limit
-                pass
+                outgoing_edge.Follow_Edge(parent=self, parent_node_id=my_node_id, parentCubeCenter=myCubeCenter, upstreamJointPosition=upstreamJointPosition, upstreamJointProportion=myUpstreamJointProportion)
