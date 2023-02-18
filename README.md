@@ -16,8 +16,8 @@ After installing pyrosim and pybullet, clonse this repository and navigate to th
 
 # Structure of Code
 
-The 3d creature's genotype is defined as a graph, where nodes represent body parts and edges represent connections between those body parts. Using this representation, any creature body can be represented. A simple creature might be a repeating body segment, each one with a leg:
+The 3d creature's genotype is defined as a graph, where nodes represent body parts and edges represent connections between those body parts. Using this representation, any creature body can be generated. A simple creature might be a repeating body segment, each one with a leg:
 
 <img src="images/Picture1.png" width="200">
 
-The recursive edge is regulated by a `self.recursive_limit` attribute in `bodynode.py` which limits the number of times a body part can connect to itself.
+The recursive edge is regulated by a `self.recursive_limit` attribute in `BODY_NODE` which limits the number of times a body part can connect to itself.
