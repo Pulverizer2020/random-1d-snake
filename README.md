@@ -16,7 +16,7 @@ After installing pyrosim and pybullet, clonse this repository and navigate to th
 
 # Structure of Code
 
-The 3d creature's genotype is defined as a graph, where nodes represent body parts and edges represent connections between those body parts. To create a creature, a self-looping edge is used to denote the same body part should be spawned multiple times in a row:
+The 3d creature's genotype is defined as a graph, where nodes represent body parts and edges represent connections between those body parts. Using this representation, any creature body can be represented. A simple creature might be a repeating body segment, each one with a leg:
 
 <img src="images/Picture1.png" width="200">
 
