@@ -2,7 +2,7 @@
 
 Generate random 3d creatures.
 
-Make using [pybullet](https://pybullet.org/wordpress/index.php/forum-2/), extending [pyrosim](https://github.com/jbongard/pyrosim)
+Make using [pybullet](https://pybullet.org/wordpress/index.php/forum-2/) & [pyrosim](https://github.com/jbongard/pyrosim) libraries. Made after taking the [r/ludobots] (https://www.reddit.com/r/ludobots/wiki/installation/) course
 
 # Demo
 
