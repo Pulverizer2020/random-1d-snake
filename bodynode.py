@@ -68,8 +68,15 @@ class BODY_NODE:
             parentCenterToChildJointUnitVectorPerp2 = parentCenterToChildJointPerpendicularUnitVectors[1]
 
             # the center of the new cube is in the same direction as the previous center to this connecting joint
+            print("parentCenterToChildJointUnitVector", parentCenterToChildJointUnitVector)
             myCubeCenter = parentCenterToChildJointUnitVector * self.length/2
             
+
+        
+        
+        roll = 0
+        pitch = np.arctan2(myCubeCenter[1], myCubeCenter[0])
+        yaw = np.arctan2(myCubeCenter[2], myCubeCenter[0])
 
         # then create the body part
         build_body_array.append(( 
@@ -77,8 +84,11 @@ class BODY_NODE:
             str(my_node_id),
             myCubeCenter, 
             [self.length, self.width, self.height],
-            my_rgba_color
+            my_rgba_color,
+            f"{roll} {pitch} {yaw}"
         ))
+
+        
 
         
 
