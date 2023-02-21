@@ -13,7 +13,7 @@ from bodynode import build_brain_array
 num_segments = np.random.randint(3,6)
 print("num_segments:", num_segments)
 
-snake = BODY_NODE(
+creature = BODY_NODE(
                 outgoing_edges=[
                 BODY_EDGE("is_recursive"),
                 BODY_EDGE(BODY_NODE(
@@ -25,13 +25,32 @@ snake = BODY_NODE(
                 ], 
                 recursive_limit=num_segments
                 )
+# creature = BODY_NODE(
+#                 outgoing_edges=[
+#                 BODY_EDGE("is_recursive"),
+#                 BODY_EDGE(BODY_NODE(
+#                     outgoing_edges=[
+#                         BODY_EDGE("is_recursive"),
+#                         ],
+#                     recursive_limit=1
+#                     )),
+#                 BODY_EDGE(BODY_NODE(
+#                     outgoing_edges=[
+#                         BODY_EDGE("is_recursive"),
+#                         ],
+#                     recursive_limit=1
+#                     ))
+#                 ], 
+#                 recursive_limit=num_segments
+#                 )
+
 
 
 
 # print(pyrosim.Send_Cube(name=f"{3}", pos=[1,2,3] , size=[1, 2, 3]))
 
 
-snake.Recursively_Generate_Body(None, parent_node_id=None, my_node_id=None, parentCenterToChildJointUnitVector=None, parentCenterToChildJointPerpendicularUnitVectors=None)
+creature.Recursively_Generate_Body(my_node_id=None, parentCenterToChildJointUnitVector=None)
 
 
 

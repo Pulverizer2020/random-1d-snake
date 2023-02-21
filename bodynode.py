@@ -43,7 +43,7 @@ class BODY_NODE:
         self.recursive_limit = recursive_limit
         self.outgoing_edges = outgoing_edges
 
-    def Recursively_Generate_Body(self, parent: "BODY_NODE", parent_node_id: int | None, my_node_id: int | None, parentCenterToChildJointUnitVector: list[float] | None, parentCenterToChildJointPerpendicularUnitVectors: list[list[float]] | None):
+    def Recursively_Generate_Body(self, my_node_id: int | None, parentCenterToChildJointUnitVector: list[float] | None):
         
         
         # sometimes my_node_id gets passed through by the edge
@@ -63,12 +63,7 @@ class BODY_NODE:
         if my_node_id == 0:
             myCubeCenter = [rootx, rooty, rootz]
         else:
-            parentCenterToChildJointUnitVector
-            parentCenterToChildJointUnitVectorPerp1 = parentCenterToChildJointPerpendicularUnitVectors[0]
-            parentCenterToChildJointUnitVectorPerp2 = parentCenterToChildJointPerpendicularUnitVectors[1]
-
             # the center of the new cube is in the same direction as the previous center to this connecting joint
-            print("parentCenterToChildJointUnitVector", parentCenterToChildJointUnitVector)
             myCubeCenter = parentCenterToChildJointUnitVector * self.length/2
             
 

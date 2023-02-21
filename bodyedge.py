@@ -17,20 +17,24 @@ from bodynode import rootz
 
 class BODY_EDGE:
     def __init__(self, child: BODY_NODE | Literal["is_recursive"]) -> None:
-        # all body parts are rectangular prisims
-        # self.length_proportion = np.random.rand()
-        # self.width_proportion = np.random.rand()
-        # self.height_proportion = 1
-
         # for joint to be on the surface, at least one of these numbers must == 1
         if child == "is_recursive":
+            # if this is a recursive edge, we want the joint to be on the opposite side of the previous joint
             self.length_proportion = 1
             self.width_proportion = np.random.rand()
             self.height_proportion = np.random.rand()
         else:
+            surface_i = np.random.randint(low=0,high=2)
             self.length_proportion = np.random.uniform(low=0.05, high=1)
             self.width_proportion = np.random.rand()
             self.height_proportion = np.random.rand()
+            match surface_i:
+                case 0:
+                    self.length_proportion = 1
+                case 1:
+                    self.width_proportion = 1
+                case 2:
+                    self.height_proportion = 1
             
 
         self.child = child
@@ -102,9 +106,8 @@ class BODY_EDGE:
         
         # unit vector from parent cencer to child joint placement
         parentCenterToChildJointUnitVector = self.computeUnitVector(parentCubeCenter, joint_pos)
-        parentCenterToChildJointPerpendiculatUnitVector1 = self.arbitrary_perpendicular_unit_vector(parentCenterToChildJointUnitVector)
-        parentCenterToChildJointPerpendiculatUnitVector2 = np.cross(parentCenterToChildJointUnitVector, parentCenterToChildJointPerpendiculatUnitVector1)
-        return joint_pos, parentCenterToChildJointUnitVector, parentCenterToChildJointPerpendiculatUnitVector1, parentCenterToChildJointPerpendiculatUnitVector2
+        
+        return joint_pos, parentCenterToChildJointUnitVector
 
 
     def Follow_Edge(self, parent: BODY_NODE, parent_node_id: int, parentCubeCenter: list[float], upstreamJointPosition: list[float], upstreamJointProportion: list[float]):
@@ -116,19 +119,11 @@ class BODY_EDGE:
         """
 
         
-        joint_pos, parentCenterToChildJointUnitVector, perpUnitVectorWidth, perpUnitVectorHeight = self.compute_joint_position(parent, 
+        joint_pos, parentCenterToChildJointUnitVector = self.compute_joint_position(parent, 
                                                                          parent_node_id=parent_node_id,
                                                                          parentCubeCenter=parentCubeCenter, 
                                                                          upstreamJointProportion=upstreamJointProportion, 
                                                                          upstreamJointPosition=upstreamJointPosition)
-        
-        
-
-      
-
-        
-            
-        
 
 
         # creating the pybullet blocks and joints
@@ -157,13 +152,11 @@ class BODY_EDGE:
         
 
         if self.child == "is_recursive":
-            print("self.child", type(self.child).__name__)
-            parent.Recursively_Generate_Body(parent=parent, parent_node_id=parent_node_id, my_node_id=child_node_id, parentCenterToChildJointUnitVector=parentCenterToChildJointUnitVector, parentCenterToChildJointPerpendicularUnitVectors=[perpUnitVectorWidth, perpUnitVectorHeight])
+            parent.Recursively_Generate_Body(my_node_id=child_node_id, parentCenterToChildJointUnitVector=parentCenterToChildJointUnitVector)
         else:
-            print("self.child", type(self.child).__name__, self.child.recursive_limit)
             # make a copy so the children keep their own self.recursive_limit
             child_copy = copy.deepcopy(self.child) 
-            child_copy.Recursively_Generate_Body(parent=parent, parent_node_id=parent_node_id, my_node_id=child_node_id, parentCenterToChildJointUnitVector=parentCenterToChildJointUnitVector, parentCenterToChildJointPerpendicularUnitVectors=[perpUnitVectorWidth, perpUnitVectorHeight])
+            child_copy.Recursively_Generate_Body(my_node_id=child_node_id, parentCenterToChildJointUnitVector=parentCenterToChildJointUnitVector)
             
         
             
